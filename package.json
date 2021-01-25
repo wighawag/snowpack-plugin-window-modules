@@ -1,0 +1,32 @@
+{
+  "name": "snowpack-plugin-window-modules",
+  "version": "0.1.0",
+  "description": "Snowpack plugin that auto inject code so that any module get added to the window.modules object.",
+  "keywords": [
+    "snowpack",
+    "plugin"
+  ],
+  "author": "wighawag@gmail.com",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "dependencies": {
+    "fs-extra": "^9.1.0",
+    "minimatch": "^3.0.4"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.13.0",
+    "@types/fs-extra": "^9.0.6",
+    "@types/minimatch": "^3.0.3",
+    "@types/node": "^14.14.21",
+    "snowpack": "^3.0.11",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.7.2"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w"
+  }
+}
