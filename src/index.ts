@@ -63,11 +63,15 @@ export default function (snowpackConfig: SnowpackConfig, options: WindowModulePl
           const newContent = contents + `
 (async () => {
   const module = await import(import.meta.url);
-  window.modules = window.modules || {};
-  window.modules[import.meta.url] = module;
-  
-  let name = import.meta.url;
-  let splits = import.meta.url.split('/');
+
+  let url = import.meta.url;
+  const queryParam = url.indexOf('?');
+  if (queryParam > 0) {
+    url = url.slice(0, queryParam);
+  }
+
+  let name = url;
+  let splits = name.split('/');
   if (splits.length > 1) {
     const lastPart = splits[splits.length - 1];
     if (lastPart === 'index.js' || lastPart === 'index') {
@@ -76,17 +80,29 @@ export default function (snowpackConfig: SnowpackConfig, options: WindowModulePl
       name = splits[splits.length - 1];
     }
   }
-
   const lastDot = name.lastIndexOf('.');
   if (lastDot > 0) {
     name = name.slice(0, lastDot);
   }
+
+  window.modules = window.modules || {};
+  window.originalModules = window.originalModules || {};
+
+  if (!window.originalModules[url]) {
+    if (window.originalModules[name] === undefined) {
+      window.originalModules[name] = module;
+    } else {
+      window.originalModules[name] = null;
+    }
+    window.originalModules[url] = module;
+  }  
   
   if (window.modules[name] === undefined) {
     window.modules[name] = module;
-  } else {
+  } else if(!window.modules[url]) {
     window.modules[name] = null;
   }
+  window.modules[url] = module;
 })();
 `;
         if (options.writeToFolder) {
