@@ -74,7 +74,6 @@ function default_1(snowpackConfig, options) {
   if (lastDot > 0) {
     name = name.slice(0, lastDot);
   }
-  console.log({name, lastDot, url: import.meta.url});
   
   if (window.modules[name] === undefined) {
     window.modules[name] = module;
